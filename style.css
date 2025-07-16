@@ -1,0 +1,73 @@
+body {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    background: linear-gradient(45deg, yellow, cyan, magenta, lime);
+    background-size: 400% 400%;
+    animation: rainbow 10s infinite;
+    text-align: center;
+    padding: 30px;
+    direction: rtl;
+    color: red;
+  }
+  
+  @keyframes rainbow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  .dark-mode {
+    background-color: black;
+    color: #0ff;
+  }
+  
+  input, button, select {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    width: 80%;
+    font-size: 16px;
+    border: 2px dashed #ff00ff;
+    background-color: #fffb00;
+    color: #0000ff;
+    transition: 0.3s;
+  }
+  
+  input:hover, button:hover, select:hover {
+    background-color: #ff0000;
+    color: #00ff00;
+    transform: rotate(2deg);
+  }
+  
+  h1 {
+    font-size: 36px;
+    text-shadow: 3px 3px 0px #ff00ff;
+    background-color: lime;
+    padding: 10px;
+    border-radius: 20px;
+  }
+  
+  .buttons button {
+    margin: 10px;
+    padding: 15px 25px;
+    font-size: 20px;
+    background-color: orange;
+    color: blue;
+    border: 3px dotted red;
+    border-radius: 30px;
+  }
+  
+  .buttons button:hover {
+    background-color: black;
+    color: yellow;
+    font-weight: bold;
+  }
+  
+  .info p {
+    background-color: pink;
+    border: 2px solid purple;
+    padding: 10px;
+    margin: 5px auto;
+    width: 80%;
+    color: darkblue;
+  }
+  

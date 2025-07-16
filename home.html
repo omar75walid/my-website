@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>الصفحة الرئيسية</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>مرحبًا بك في الموقع الطبي ! 🤪</h1>
+  <select id="langSelect" onchange="changeLang()"></select>
+
+  <div class="buttons">
+    <button onclick="location.href='info.html'">🛡️ معلومات طبية</button>
+    <button onclick="location.href='camera.html'">📷 تشخيص بالكاميرا</button>
+    <button onclick="location.href='ai.html'">🤖 مساعد الذكاء الاصطناعي</button>
+    <button onclick="window.open('https://appinventor.mit.edu/', '_blank')">📱 MIT App Inventor</button>
+
+    <!-- الزرين الجداد -->
+    <button onclick="location.href='body_map_camera.html'">🧍‍♂️ تحديد مكان الألم الحقيقي</button>
+    <button onclick="location.href='map.html'">🏥 أقرب مستشفى</button>
+
+    <button onclick="logout()">🚪 تسجيل الخروج</button>
+  </div>
+
+  <button onclick="toggleMode()">🌓 الوضع الليلي/النهاري</button>
+
+  <script src="lang.js"></script>
+  <script>
+    function logout() {
+      localStorage.removeItem("username");
+      localStorage.removeItem("password");
+      alert("تم تسجيل الخروج بنجاح.");
+      location.href = "login.html";
+    }
+  </script>
+</body>
+</html>

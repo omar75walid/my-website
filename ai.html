@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>🤖 مساعد الذكاء الاصطناعي</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { font-family: Arial; direction: rtl; }
+    #chat { max-width: 600px; margin: auto; padding: 20px; background: #f0f0f0; border-radius: 10px; }
+    #messages { height: 300px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; }
+    input[type=\"text\"] { width: 80%; padding: 10px; }
+    button { padding: 10px; }
+  </style>
+</head>
+<body>
+  <div id="chat">
+    <h2>🤖 المساعد الذكي</h2>
+    <div id="messages"></div>
+    <input type="text" id="question" placeholder="اكتب سؤالك الطبي هنا..." />
+    <button onclick="ask()">🧠 اسأل</button><br><br>
+    <button onclick="location.href='index.html'">⬅️ عودة للرئيسية</button>
+  </div>
+
+  <script>
+    const messages = document.getElementById('messages');
+    const answers = {
+      "ما علاج الحمى": "اشرب سوائل وارتاح، واستخدم خافض حرارة.",
+      "أعراض الجفاف": "الشعور بالعطش الشديد، دوخة، بول قليل.",
+      "علاج الصداع": "اشرب ماء وخد راحة، وقد يساعد مسكن بسيط.",
+      "أسباب ألم البطن": "قد تكون غازات، أو أكل فاسد، أو التهابات."
+
+      
+    
+    };
+
+    function ask() {
+      const input = document.getElementById('question');
+      const question = input.value.trim();
+      if (!question) return;
+
+      const message = document.createElement('div');
+      message.textContent = "🙋‍♂️ أنت: " + question;
+      messages.appendChild(message);
+
+      const reply = document.createElement('div');
+
+      // الرد من المساعد
+      if (answers[question]) {
+        reply.textContent = "🤖 المساعد: " + answers[question];
+      } else {
+        reply.innerHTML = `🤖 المساعد: لا أملك إجابة الآن، <a href="https://www.google.com/search?q=${encodeURIComponent(question)}" target="_blank">ابحث في Google</a>`;
+      }
+
+      messages.appendChild(reply);
+      input.value = '';
+      messages.scrollTop = messages.scrollHeight;
+    }
+  </script>
+</body>
+</html>

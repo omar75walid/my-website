@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>تشخيص بالكاميرا</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>📷 التشخيص بالكاميرا</h1>
+  <video id="video" autoplay muted></video>
+  <div id="status">📡 جاري تحليل البيانات...</div>
+  <div id="diagnosis"></div>
+  
+  
+
+  <button onclick="restartScan()">🔁 تشخيص جديد</button>
+  <button onclick="location.href='home.html'">🏠 رجوع</button>
+  <button onclick="toggleMode()">🌓 الوضع الليلي/النهاري</button>
+
+  <script>
+    const video = document.getElementById("video");
+    const statusDiv = document.getElementById("status");
+    const diagnosisDiv = document.getElementById("diagnosis");
+    let audioContext, analyser, micSource, stream;
+    let symptom = null;
+    let quietCounter = 0;
+
+    function speak(text) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "ar-EG";
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function restartScan() {
+      statusDiv.textContent = "📡 جاري تحليل البيانات...";
+      diagnosisDiv.textContent = "";
+      speak("جاري تحليل البيانات");
+      symptom = null;
+      quietCounter = 0;
+    }
+
+    async function startCamera() {
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        video.srcObject = stream;
+
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        analyser = audioContext.createAnalyser();
+        micSource = audioContext.createMediaStreamSource(stream);
+        micSource.connect(analyser);
+
+        const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+        function checkAudio() {
+          analyser.getByteFrequencyData(dataArray);
+          const avg = dataArray.reduce((a, b) => a + b, 0) / dataArray.length;
+
+          if (avg > 60) {
+            quietCounter = 0;
+            if (!symptom) {
+              const rand = Math.random();
+              if (rand < 0.5) {
+                symptom = "كحة";
+                statusDiv.textContent = "🤧 تم اكتشاف كحة!";
+                diagnosisDiv.textContent = "تشخيص: الكحة قد تكون من البرد أو التهاب. اشرب سوائل دافئة.";
+                speak("تم اكتشاف كحة. من الأفضل شرب سوائل دافئة.");
+              } else {
+                symptom = "عطس";
+                statusDiv.textContent = "🤒 تم اكتشاف عطس!";
+                diagnosisDiv.textContent = "تشخيص: يبدو أنك مصاب بنزلة برد. خذ راحة واشرب ماء.";
+                speak("تم اكتشاف عطس. يبدو أنك مصاب بنزلة برد.");
+              }
+            }
+          } else {
+            quietCounter++;
+            if (quietCounter > 30 && symptom) {
+              statusDiv.textContent = "✅ لا توجد أعراض حالياً.";
+              speak("لا توجد أعراض واضحة حالياً.");
+              symptom = null;
+            } else if (!symptom) {
+              statusDiv.textContent = "📡 جاري تحليل البيانات...";
+            }
+          }
+
+          requestAnimationFrame(checkAudio);
+        }
+
+        checkAudio();
+        speak("جاري تحليل البيانات");
+
+      } catch (err) {
+        statusDiv.textContent = "⚠️ تعذر الوصول إلى الكاميرا أو الميكروفون";
+        console.error(err);
+      }
+    }
+
+    function toggleMode() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    startCamera();
+  </script>
+</body>
+</html>

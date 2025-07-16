@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>تحديد مكان الألم - بالكاميرا</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    #camera-box {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      margin: 20px auto;
+    }
+    video {
+      width: 100%;
+      border: 3px dashed #f00;
+      border-radius: 10px;
+    }
+    #marker {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background-color: red;
+      border-radius: 50%;
+      display: none;
+      z-index: 2;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+  <h1>📸 حدد مكان الألم على جسمك الحقيقي</h1>
+
+  <div id="camera-box">
+    <video id="video" autoplay></video>
+    <div id="marker"></div>
+  </div>
+
+  <input type="text" id="symptom" placeholder="مثال: أنا عندي صداع" style="width: 80%; padding: 10px;">
+  <button onclick="markPain()">📍 حدد الألم</button>
+
+  <button onclick="location.href='home.html'">🏠 رجوع</button>
+  <button onclick="toggleMode()">🌓 الوضع الليلي</button>
+
+  <script>
+    const video = document.getElementById("video");
+    const marker = document.getElementById("marker");
+
+    const locations = {
+      "رأس": { top: "10%", left: "45%" },
+      "صداع": { top: "10%", left: "45%" },
+      "رقبة": { top: "25%", left: "48%" },
+      "كتف": { top: "30%", left: "30%" },
+      "قلب": { top: "40%", left: "44%" },
+      "صدر": { top: "42%", left: "50%" },
+      "بطن": { top: "60%", left: "48%" },
+      "معدة": { top: "62%", left: "48%" },
+      "ظهر": { top: "50%", left: "30%" },
+      "رجل": { top: "85%", left: "50%" },
+      "ركبة": { top: "90%", left: "50%" },
+      "عين": { top: "12%", left: "48%" }
+    };
+
+    function markPain() {
+      const text = document.getElementById("symptom").value;
+      let matched = false;
+
+      for (const word in locations) {
+        if (text.includes(word)) {
+          const pos = locations[word];
+          marker.style.top = pos.top;
+          marker.style.left = pos.left;
+          marker.style.display = "block";
+          matched = true;
+          speak("تم تحديد الألم في " + word);
+          break;
+        }
+      }
+
+      if (!matched) {
+        marker.style.display = "none";
+        alert("❌ لم يتم التعرف على المكان.");
+        speak("لم يتم التعرف على مكان الألم.");
+      }
+    }
+
+    function speak(text) {
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = "ar-EG";
+      speechSynthesis.speak(u);
+    }
+
+    function toggleMode() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    // تفعيل الكاميرا
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => video.srcObject = stream)
+      .catch(err => {
+        alert("⚠️ لم يتم تشغيل الكاميرا");
+        console.error(err);
+      });
+  </script>
+</body>
+</html>

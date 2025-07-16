@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>إنشاء حساب</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>إنشاء حساب جديد</h1>
+    <input type="text" id="username" placeholder="اسم المستخدم">
+    <input type="password" id="password" placeholder="كلمة المرور">
+    <button onclick="signup()">تسجيل</button>
+    <button onclick="location.href='login.html'">رجوع</button>
+  </div>
+
+  <script>
+    function signup() {
+      const user = document.getElementById("username").value;
+      const pass = document.getElementById("password").value;
+      localStorage.setItem("username", user);
+      localStorage.setItem("password", pass);
+      alert("✅ تم إنشاء الحساب بنجاح");
+      location.href = "login.html";
+    }
+  </script>
+</body>
+</html>
